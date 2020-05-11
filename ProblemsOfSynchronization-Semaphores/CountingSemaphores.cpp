@@ -1,6 +1,5 @@
 struct Semaphore { 
 	int value; 
-
 	// q contains all Process Control Blocks(PCBs) 
 	// corresponding to processes got blocked 
 	// while performing down operation. 
@@ -10,7 +9,6 @@ struct Semaphore {
 { 
 	s.value = s.value - 1; 
 	if (s.value < 0) { 
-
 		// add process to queue 
 		// here p is a process which is currently executing 
 		q.push(p); 
@@ -24,7 +22,6 @@ V(Semaphore s)
 { 
 	s.value = s.value + 1; 
 	if (s.value <= 0) { 
-
 		// remove process p from queue 
 		q.pop(); 
 		wakeup(p); 

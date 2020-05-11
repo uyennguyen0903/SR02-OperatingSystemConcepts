@@ -1,0 +1,97 @@
+Problem : 
+The analogy is based upon a hypothetical barber shop with one barber. 
+There is a barber shop which has one barber, one barber chair, and n chairs for 
+waiting for customers if there are any to sit on the chair.
+
+1.If there is no customer, then the barber sleeps in his own chair.
+3.When a customer arrives, he has to wake up the barber.
+2.If there are many customers and the barber is cutting a customer’s hair, 
+then the remaining customers either wait if there are empty chairs in the 
+waiting room or they leave if no chairs are empty.
+
+
+Solution :
+
+init (EX_NBC, 1) ; 
+init (C, 0) ; 
+init (F, 0) ; 
+
+Clients : 
+P(EX_NBC) ; 
+If (NBC<N)                 // NBC, c’est le nombre clients 
+{
+   NBC++ ; 
+   V(C) ;       // C, sémaphore pour le coiffeur  // dans ce cas C++ ; 
+   V(EX_NBC) ;
+   P(F) ;       // F, sémaphore pour le fauteuil 
+   SeFairecoiffer() ;
+}
+else 
+{ 
+   V(EX_NBC) ; 
+   Sortir() ; 
+   Sortir() ; 
+}
+
+Coiffeur : 
+while (1)
+{
+   P(C) ; 
+   P(EX_NBC); 
+   NBC-- ; // décrementer le nombre de clients qui attendent 
+   V(F); // demander à un client de s’acessoir sur le fauteuil 
+   V(EX_NBC) ;
+   Coiffer(); 
+}
+////////////////////////////////////////////////////////////////////////////
+Semaphore Customers = 0; 
+Semaphore Barber = 0; 
+Mutex Seats = 1; 
+int FreeSeats = N; 
+
+Barber { 
+	while(true) { 
+			/* waits for a customer (sleeps). */
+			down(Customers); 
+
+			/* mutex to protect the number of available seats.*/
+			down(Seats); 
+
+			/* a chair gets free.*/
+			FreeSeats++; 
+			
+			/* bring customer for haircut.*/
+			up(Barber); 
+			
+			/* release the mutex on the chair.*/
+			up(Seats); 
+			/* barber is cutting hair.*/
+	} 
+} 
+
+Customer { 
+	while(true) { 
+			/* protects seats so only 1 customer tries to sit 
+			in a chair if that's the case.*/
+			down(Seats); //This line should not be here. 
+			if(FreeSeats > 0) { 
+				
+				/* sitting down.*/
+				FreeSeats--; 
+				
+				/* notify the barber. */
+				up(Customers); 
+				
+				/* release the lock */
+				up(Seats); 
+				
+				/* wait in the waiting room if barber is busy. */
+				down(Barber); 
+				// customer is having hair cut 
+			} else { 
+				/* release the lock */
+				up(Seats); 
+				// customer leaves 
+			} 
+	} 
+} 

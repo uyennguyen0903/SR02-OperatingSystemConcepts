@@ -1,0 +1,13 @@
+P(S) : // == Down() == Wait()
+    Si S > 0
+        Alors : S = S - 1
+    Sinon 
+        S'endormir
+    Fin_Si
+
+V(S) : // == Up() == Signal()
+    Si (au moins un process bloqué sur S)
+        Alors : En réveiller un
+    Sinon
+        S = S + 1
+    Fin_Si

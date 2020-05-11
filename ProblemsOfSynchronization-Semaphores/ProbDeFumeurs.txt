@@ -1,0 +1,53 @@
+Problem :
+Le problème des fumeurs de cigarettes est le suivant : 
+Les trois processus A, B et C représentent trois fumeurs, qui possèdent respectivement 
+du tabac, des allumettes et du papier et qui doivent, pour pouvoir rouler une cigarette 
+et la fumer, se procurer les éléments complémentaires d'un Agent fournisseur. Cet Agent 
+possède un stock infini des trois produits, mais il ne fournit que deux produit au choix 
+au même temps, le fumeur possédant le produit complémentaire peut alors rouler sa cigarette 
+et fumer. L'agent attend que ses produits soient consommés avant de fournir deux autre. 
+Le choix de deux produits à fournir est aléatoire et est généré par une fonction c=Choix(), 
+si c=1 : l'agent fournit du tabac et du papier, si c=2 l'Agent fournit du tabac et des 
+allumettes et si c=3 l'Agent fournit du papier et des allumettes.
+-	En utilisant des sémaphores, écrire les processus Agent, A, B et C.
+
+Solution
+
+init (agent, 1) ;
+init (A, B, C, 0) ;
+
+1.Processus_Agent :
+
+While (1) ;
+    P(Agent) ; 
+    c=Choix() ; 
+    si (c==1) alors 
+    { 
+        Fournir(tabac+papier) ; 
+        V(B) ;  
+    }
+    Sinon 
+    si (c==2) 
+    { 
+        Fournir(tabac+allumettes) ; 
+        V(C) ;  
+    }   
+    Sinon 
+    { 
+        Fournir(papier +allumettes) ; 
+        V(A) ;  
+    }
+    Fin-Si
+    Fin-Si
+}
+ 
+2.Fumeur A :
+P(A);
+Fumer() ; 
+V(Agent) ;
+
+3.Fumeur B
+idem
+
+4.Fumeur C
+idem
