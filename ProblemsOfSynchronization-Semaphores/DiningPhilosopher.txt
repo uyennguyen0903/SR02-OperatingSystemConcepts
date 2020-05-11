@@ -1,0 +1,51 @@
+Problem : ex1 Problem.pdf
+
+1.Question 1 :
+
+init :
+var
+    fourchette : tableau[0..4] de sémaphore;
+    i : entier;
+Pour i = 0 : 4 faire
+    init(fourchette[i],1);
+
+Processus Philosophe(i) :
+Répéter
+    penser();
+    P(fourchettes[i]);
+    P(fourchettes[(i+1) % 5]);
+    manger();
+    V(fourchettes[i]);
+    V(fourchettes[(i+1) % 5]);
+Jusqu''à Faux.
+
+2.Question 2 :
+
+La solution au-dessus pourrait mener à un blocage si tous les philosophes 
+prennent la fourchette de gauche en meme temps.
+
+3.Question 3 :
+
+Init :
+
+var  
+    fourchettes : tableau[0..4] de sémaphore;  
+    i : entier; 
+    table : sémaphore;
+
+Pour i :=0 à 4 faire 
+    init(fourchettes[i],1) ;
+Init(table,4) ; // le nombre maximal de philosophes qui peuvent manger au 
+meme sans provoquer un blocage.
+
+Processus Philosophe (i)  // i = {0,1,2,3,4}
+répéter   
+    penser() ; 
+    P(table)
+    P(fourchettes[i]) ; // demander fourchette gauche
+    P(fourchettes[(i+1) mod 5]) ; // demander la fourchette droite
+    manger() ; {avec 2 fourchettes}
+    V(table)
+    V(fourchettes[i]) ; // demander fourchette gauche
+    V(fourchettes[(i+1) mod 5]) ; // demander la fourchette droite
+jusqu''à faux ;

@@ -1,0 +1,49 @@
+Problème :
+La circulation au carrefour de deux voies est réglée par des signaux lumineux 
+(feu vert/rouge). On suppose que les voitures traversent le carrefour en ligne 
+droite et que le carrefour peut contenir au plus une voiture à la fois.
+
+On impose les conditions suivantes : 
+•	toute voiture se présentant au carrefour le franchit en un temps fini (pas de famine), 
+•	les feux de chaque voie passent alternativement du vert au rouge, chaque couleur étant 
+maintenue pendant un temps fini. 
+•	Les arrivées sur les deux voies sont réparties de façon quelconque. 
+
+Le fonctionnement de ce système peut être modélisé par un ensemble de processus parallèles: 
+•	un processus P qui exécute la procédure Changement de commande des feux; 
+•	un processus est associé à chaque voiture; 
+
+Solution :
+init (TR1, 1) ; 
+init (TR2, 0) ; //on va éviter les collisions….
+init(SX1, SX2, 1) ; //une seule voiture à la fois par carrefour
+ 
+Changement :
+bool feu=1 ; 
+while (1) {
+  sleep(duree_feu) ; 
+  si (feu==1) {     
+      P(TR1) ; 
+      V(TR2) ;      
+      feu=2 ;
+    }
+   sinon  {   
+       P(TR2) ; 
+       V(TR1) ;  
+       feu =1 ;
+    }
+
+Traversee 1 :
+P(SX1) ; // les voitures attendent ici  
+P(TR1) ; 
+Traverser()
+V(TR1) ; 
+V(SX1)
+
+Traversee 2 :
+P(SX2) ; // les voitures attendent ici  
+P(TR2) ; 
+Traverser ()
+V(TR2) ; 
+V(SX2) ;
+
