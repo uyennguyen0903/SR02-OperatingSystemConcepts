@@ -22,8 +22,8 @@ int main()
         fprintf(stderr, "pthread_creat() code retour:%d\n", it2);
         exit(EXIT_FAILURE);
     }
-    printf("pthread_creat() code retour:%d\n", it1);
-    printf("pthread_creat() code retour:%d\n", it2);
+    printf("pthread_creat() code retour 1:%d\n", it1);
+    printf("pthread_creat() code retour 2:%d\n", it2);
     pthread_join(t1, NULL);
     pthread_join(t2, NULL);
     exit(EXIT_SUCCESS);
